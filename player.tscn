@@ -27,6 +27,7 @@ height = 381.33325
 position = Vector2(796.00006, 541)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("1_onrkg")
+dampening = 0.5
 metadata/_edit_group_ = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
