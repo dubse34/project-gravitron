@@ -2,48 +2,46 @@ extends Area2D
 
 signal hit
 
-@export var acceleration = 50 # How fast the player will accelerate (pixels/sec).
+@export var thrust_force = 300.0 #  strength of click
+@export var drag_coefficient = 5.0 # deceleration 
+@export var dampening = 0.9 
 
-@export var drag_coefficient = 5 # the deceleration coefficient
-
-@export var dampening = 0.9 # The ratio of speed remaining after colliding with a wall (inelasticity)
-
-var screen_size # Size of the game window.
-
-var velocity = Vector2.ZERO # The player's movement vector.
+var screen_size 
+var velocity = Vector2.ZERO 
 
 func _ready():
 	screen_size = get_viewport_rect().size
-	
+
+func _unhandled_input(event):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		var mouse_pos = get_global_mouse_position()
+		var direction = (mouse_pos - position).normalized()
+		
+		# Reset velocity 
+		velocity = Vector2.ZERO
+		# opposite click thingy bro idk it works
+		velocity -= direction * thrust_force
+
 func _process(delta):
-	if Input.is_action_pressed("move_right"):
-		velocity.x += acceleration
-	if Input.is_action_pressed("move_left"):
-		velocity.x -= acceleration
-	if Input.is_action_pressed("move_down"):
-		velocity.y += acceleration
-	if Input.is_action_pressed("move_up"):
-		velocity.y -= acceleration
 	
-	# rebound if hit top bottom or sides
-	if position.x == screen_size.x || position.x == 0:
-		velocity.x = velocity.x * -1 * dampening
+	if position.x >= screen_size.x or position.x <= 0:
+		velocity.x = -velocity.x * dampening
+	if position.y >= screen_size.y or position.y <= 0:
+		velocity.y = -velocity.y * dampening
+
+	# drag dubse
+	velocity.x += 0.5 * drag_coefficient / 100000 * velocity.x * abs(velocity.x) * -1
+	velocity.y += 0.5 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1
+
 	
-	if position.y == screen_size.y || position.y == 0:
-		velocity.y = velocity.y * -1 * dampening
-
-	velocity.x += 0.5 * drag_coefficient / 100000 * velocity.x * abs(velocity.x) * -1 #creates wind resistance in opposite direction to motion 1/2*p*v^2*cd
-	velocity.y += 0.5 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1 #creates wind resistance in opposite direction to motion
-
-	if velocity.length() > 0:
-		#velocity = velocity.normalized() * speed
+	if velocity.length() > 0.1:
 		$AnimatedSprite2D.play()
 	else:
 		$AnimatedSprite2D.stop()
+
 	
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
-
 
 func _on_area_entered(area):
 	hit.emit()
