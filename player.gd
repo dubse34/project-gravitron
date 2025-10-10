@@ -6,19 +6,26 @@ extends Area2D
 
 var screen_size 
 var velocity = Vector2.ZERO 
+var click_time = 0
 
 func _ready():
 	screen_size = get_viewport_rect().size
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		click_time = Time.get_ticks_msec()	
+	
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT: #button is released
+		click_time = Time.get_ticks_msec() - click_time
+		var speed = click_time
+		if speed > 1000: speed = 1000
 		var mouse_pos = get_global_mouse_position()
 		var direction = (mouse_pos - position).normalized()
-		
-		# Reset velocity 
-		velocity = Vector2.ZERO
+		#
+		## Reset velocity 
+		#velocity = Vector2.ZERO
 		# opposite click thingy bro idk it works
-		velocity -= direction * thrust_force
+		velocity -= direction * speed
 
 func _process(delta):
 	
