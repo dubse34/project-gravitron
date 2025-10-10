@@ -39,8 +39,3 @@ func _process(delta):
 	
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, screen_size)
-
-
-func _on_area_entered(area):
-	hit.emit()
-	
