@@ -25,8 +25,8 @@ func _unhandled_input(event):
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT: #button is released
 		mouse_pressed = false	
 		click_time = Time.get_ticks_msec() - click_time
-		speed = click_time * 2
-		if speed > 1000: speed = 1000
+		speed = click_time * 4
+		if speed > 1700: speed = 1700
 		var mouse_pos = get_global_mouse_position()
 		direction = (mouse_pos - position).normalized()
 		
