@@ -12,6 +12,8 @@ var speed = Vector2.ZERO
 
 var mouse_pressed = false #variable for detecting mouse press used by aim pointer child node
 
+var world_size = Vector2(3600, 2000) #variable for world corresponding to background image size (larger than player camera)
+
 func _ready():
 	screen_size = get_viewport_rect().size
 
@@ -35,9 +37,9 @@ func _unhandled_input(event):
 
 func _process(delta):
 	
-	if position.x >= screen_size.x or position.x <= 0:
+	if position.x >= world_size.x or position.x <= 0:
 		velocity.x = -velocity.x * dampening
-	if position.y >= screen_size.y or position.y <= 0:
+	if position.y >= world_size.y or position.y <= 0:
 		velocity.y = -velocity.y * dampening
 
 	# drag dubse
@@ -45,4 +47,4 @@ func _process(delta):
 	velocity.y += 0.5 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1
 	
 	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, screen_size)
+	position = position.clamp(Vector2.ZERO, world_size)
