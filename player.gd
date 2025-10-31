@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var drag_coefficient = 5.0 # deceleration 
+@export var drag_coefficient = 3.0 # deceleration 
 @export var dampening = 0.9 
 
 var screen_size 
@@ -25,8 +25,8 @@ func _unhandled_input(event):
 	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT: #button is released
 		mouse_pressed = false	
 		click_time = Time.get_ticks_msec() - click_time
-		speed = click_time * 2
-		if speed > 1000: speed = 1000
+		speed = click_time * 4
+		if speed > 1700: speed = 1700
 		var mouse_pos = get_global_mouse_position()
 		direction = (mouse_pos - position).normalized()
 		
@@ -43,8 +43,8 @@ func _process(delta):
 		velocity.y = -velocity.y * dampening
 
 	# drag dubse
-	velocity.x += 0.5 * drag_coefficient / 100000 * velocity.x * abs(velocity.x) * -1
-	velocity.y += 0.5 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1
+	velocity.x += 0.08 * drag_coefficient / 100000 * velocity.x * abs(velocity.x) * -1 - velocity.x * 0.0022
+	velocity.y += 0.08 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1 - velocity.y * 0.0022
 	
 	position += velocity * delta
 	position = position.clamp(Vector2.ZERO, world_size)
