@@ -25,7 +25,7 @@ animations = [{
 radius = 85.33325
 height = 381.33325
 
-[node name="Player" type="Area2D"]
+[node name="Player" type="CharacterBody2D"]
 position = Vector2(816.00006, 548)
 scale = Vector2(0.75, 0.75)
 script = ExtResource("1_onrkg")
@@ -46,5 +46,3 @@ script = ExtResource("3_hqtel")
 
 [node name="Sprite2D" type="Sprite2D" parent="pointer"]
 texture = ExtResource("4_sweqy")
-
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]

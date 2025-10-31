@@ -1,23 +1,29 @@
 [gd_scene load_steps=4 format=3 uid="uid://ihpbvfwt3p5n"]
 
 [ext_resource type="PackedScene" uid="uid://bpnc12rjpa6pq" path="res://ball.tscn" id="1_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://24r7n3yeqiq7" path="res://assets/walls_test.png" id="1_h2yge"]
 [ext_resource type="PackedScene" uid="uid://d1w4ssqfas21p" path="res://player.tscn" id="2_h2yge"]
-[ext_resource type="Texture2D" uid="uid://djcyqxyj7bu8p" path="res://5yzpqs8t43731.png" id="3_h2yge"]
 
 [node name="Main" type="Node"]
 
-[node name="5Yzpqs8t43731" type="Sprite2D" parent="."]
-position = Vector2(1787, 992.0001)
-scale = Vector2(1.8651042, 1.8370371)
-texture = ExtResource("3_h2yge")
+[node name="WallsTest" type="Sprite2D" parent="."]
+position = Vector2(2250.0002, 1157)
+scale = Vector2(1.3, 1.3)
+texture = ExtResource("1_h2yge")
 
 [node name="Ball" parent="." instance=ExtResource("1_0xm2m")]
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("2_h2yge")]
-position = Vector2(1225, 671)
-scale = Vector2(0.6, 0.6)
+position = Vector2(913, 582)
+scale = Vector2(0.7, 0.7)
+dampening = 0.9
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(3.9999542, 6.6666512)
 scale = Vector2(1.3333334, 1.3333334)
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="StaticBody2D"]
+polygon = PackedVector2Array(151, 47, 1929, 45, 1981, 55, 2034, 92, 2074, 147, 2093, 198, 2091, 263, 2116, 286, 2146, 260, 2151, 146, 2188, 97, 2225, 64, 2295, 46, 4183, 43, 4256, 73, 4318, 156, 4341, 261, 4328, 2043, 4320, 2095, 4289, 2140, 4238, 2181, 4173, 2194, 2218, 2176, 2168, 2150, 2133, 2084, 2124, 2038, 2133, 1295, 2144, 1209, 2191, 1171, 2259, 1155, 2539, 1155, 3197, 1158, 3210, 1141, 3203, 1115, 2269, 1107, 2217, 1091, 2167, 1035, 2141, 975, 2139, 860, 2115, 849, 2097, 861, 2095, 961, 2082, 997, 2050, 1037, 1997, 1077, 1913, 1103, 200, 1093, 113, 1059, 71, 999, 57, 943, 50, 175, 72, 113, 114, 66, 146, 50, 114, 12, 32, 77, -4, 1177, 1999, 1170, 2060, 1173, 2064, 2257, 4392, 2253, 4432, -11, 111, -10, 113, 11, 146, 50)

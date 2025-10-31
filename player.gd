@@ -1,10 +1,9 @@
-extends Area2D
+extends CharacterBody2D
 
-@export var drag_coefficient = 5.0 # deceleration 
-@export var dampening = 0.9 
+@export var drag_coefficient = 0.8 # deceleration 
+@export var dampening = 0.9
 
 var screen_size 
-var velocity = Vector2.ZERO 
 var click_time = 0 #saves duration of click for force calculations
 
 var direction = Vector2.ZERO
@@ -12,10 +11,11 @@ var speed = Vector2.ZERO
 
 var mouse_pressed = false #variable for detecting mouse press used by aim pointer child node
 
-var world_size = Vector2(3600, 2000) #variable for world corresponding to background image size (larger than player camera)
+var world_size = Vector2(3600, 2000) #variable for world (larger than player camera)
 
 func _ready():
 	screen_size = get_viewport_rect().size
+	velocity = Vector2.ZERO  #velocity is built into characterbody2d
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
@@ -34,17 +34,21 @@ func _unhandled_input(event):
 		#velocity = Vector2.ZERO
 		# opposite click thingy bro idk it works
 		velocity -= direction * speed
+		
+func _physics_process(delta): #new function for handling collisions
+	var collision_info = move_and_collide(velocity * delta)
+	if collision_info:
+		velocity = velocity.bounce(collision_info.get_normal()) * dampening
 
-func _process(delta):
-	
-	if position.x >= world_size.x or position.x <= 0:
-		velocity.x = -velocity.x * dampening
-	if position.y >= world_size.y or position.y <= 0:
-		velocity.y = -velocity.y * dampening
-
+#func _process(delta):
+	#if position.x >= world_size.x or position.x <= 0:
+		#velocity.x = -velocity.x * dampening
+	#if position.y >= world_size.y or position.y <= 0:
+		#velocity.y = -velocity.y * dampening
+#
 	# drag dubse
-	velocity.x += 0.5 * drag_coefficient / 100000 * velocity.x * abs(velocity.x) * -1
-	velocity.y += 0.5 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1
-	
-	position += velocity * delta
-	position = position.clamp(Vector2.ZERO, world_size)
+	velocity.x += 0.5 * drag_coefficient / 100000 * velocity.x * abs(velocity.x) * -1 - velocity.x * 0.0022
+	velocity.y += 0.5 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1 - velocity.y * 0.0022
+	#
+	#position += velocity * delta
+	#position = position.clamp(Vector2.ZERO, world_size)
