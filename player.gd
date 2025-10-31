@@ -3,6 +3,10 @@ extends CharacterBody2D
 @export var drag_coefficient = 0.8 # deceleration 
 @export var dampening = 0.9
 
+#@onready var main = get_node("/root/Main")
+#
+#var projectile_path = preload("res://projectile.tscn")
+
 var screen_size 
 var click_time = 0 #saves duration of click for force calculations
 
@@ -30,6 +34,11 @@ func _unhandled_input(event):
 		var mouse_pos = get_global_mouse_position()
 		direction = (mouse_pos - position).normalized()
 		
+		#var projectile = projectile_path.instantiate()
+		#projectile.dir = direction
+		#projectile.pos = $Node2D.global_position
+		#main.add_child(projectile)
+		
 		## Reset velocity 
 		#velocity = Vector2.ZERO
 		# opposite click thingy bro idk it works
@@ -37,6 +46,10 @@ func _unhandled_input(event):
 		
 func _physics_process(delta): #new function for handling collisions
 	var collision_info = move_and_collide(velocity * delta)
+	
+	velocity.x += 0.5 * drag_coefficient / 100000 * velocity.x * abs(velocity.x) * -1 - velocity.x * 0.0022
+	velocity.y += 0.5 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1 - velocity.y * 0.0022
+	
 	if collision_info:
 		velocity = velocity.bounce(collision_info.get_normal()) * dampening
 
@@ -47,8 +60,7 @@ func _physics_process(delta): #new function for handling collisions
 		#velocity.y = -velocity.y * dampening
 #
 	# drag dubse
-	velocity.x += 0.5 * drag_coefficient / 100000 * velocity.x * abs(velocity.x) * -1 - velocity.x * 0.0022
-	velocity.y += 0.5 * drag_coefficient / 100000 * velocity.y * abs(velocity.y) * -1 - velocity.y * 0.0022
+
 	#
 	#position += velocity * delta
 	#position = position.clamp(Vector2.ZERO, world_size)
