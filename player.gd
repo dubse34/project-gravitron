@@ -3,6 +3,9 @@ extends CharacterBody2D
 @export var drag_coefficient = 0.8 # deceleration 
 @export var dampening = 0.9
 
+var projectile_path = preload("res://projectile.tscn")
+@onready var main = get_node("/root/Main")
+
 var screen_size 
 var click_time = 0 #saves duration of click for force calculations
 
@@ -29,6 +32,12 @@ func _unhandled_input(event):
 		if speed > 1700: speed = 1700
 		var mouse_pos = get_global_mouse_position()
 		direction = (mouse_pos - position).normalized()
+		
+		var projectile = projectile_path.instantiate()
+		projectile.dir = direction
+		projectile.pos = global_position
+		projectile.speed = speed * 2
+		main.add_child(projectile)
 		
 		## Reset velocity 
 		#velocity = Vector2.ZERO
