@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://d1w4ssqfas21p"]
 
 [ext_resource type="Texture2D" uid="uid://cnxllq8kmq6tb" path="res://assets/bork.jpeg" id="1_4flbx"]
-[ext_resource type="Script" uid="uid://dgyok75vreuth" path="res://player.gd" id="1_onrkg"]
-[ext_resource type="Script" uid="uid://coxuelrp4f8tj" path="res://pointer.gd" id="3_hqtel"]
+[ext_resource type="Script" uid="uid://dgyok75vreuth" path="res://Scripts/player.gd" id="1_onrkg"]
+[ext_resource type="Script" uid="uid://coxuelrp4f8tj" path="res://Scripts/pointer.gd" id="3_hqtel"]
 [ext_resource type="Texture2D" uid="uid://baijjfxvqlhcu" path="res://assets/white_circle.png" id="4_sweqy"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sh265"]
