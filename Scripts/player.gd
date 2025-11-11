@@ -2,9 +2,12 @@ extends CharacterBody2D
 
 @export var drag_coefficient = 0.8 # deceleration 
 @export var dampening = 0.9
+@export var ammo = 2
 
-var projectile_path = preload("res://projectile.tscn")
+var projectile_path = preload("res://Scenes/projectile.tscn")
 @onready var main = get_node("/root/Main")
+
+@onready var HUD = get_node("/root/Main/HUD") #gets link to HUD node for ammo updates
 
 var screen_size 
 var click_time = 0 #saves duration of click for force calculations
@@ -19,13 +22,14 @@ var world_size = Vector2(3600, 2000) #variable for world (larger than player cam
 func _ready():
 	screen_size = get_viewport_rect().size
 	velocity = Vector2.ZERO  #velocity is built into characterbody2d
+	HUD.update_ammo(ammo) #initialises ammo score
 
 func _unhandled_input(event):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed and ammo > 0:
 		click_time = Time.get_ticks_msec()
 		mouse_pressed = true	
 	
-	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT: #button is released
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and ammo > 0: #button is released
 		mouse_pressed = false	
 		click_time = Time.get_ticks_msec() - click_time
 		speed = click_time * 4
@@ -43,6 +47,10 @@ func _unhandled_input(event):
 		#velocity = Vector2.ZERO
 		# opposite click thingy bro idk it works
 		velocity -= direction * speed
+		
+		ammo = ammo - 1 #reduces ammo by 1 on each click
+		
+		HUD.update_ammo(ammo) #updates ammo score when it changes
 		
 func _physics_process(delta): #new function for handling collisions
 	var collision_info = move_and_collide(velocity * delta)
